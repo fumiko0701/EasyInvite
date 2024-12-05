@@ -4,11 +4,15 @@ import string
 import sqlite3
 import qrcode
 import os
+from flask_talisman import Talisman  # Para adicionar cabeçalhos de segurança
 
 app = Flask(__name__)
 
 # Configuração para sessão
 app.secret_key = '02faf3e2914'  # Use uma chave secreta real e segura para produção
+
+# Configurar o Talisman para adicionar cabeçalhos de segurança
+Talisman(app, content_security_policy=None)
 
 # Função para gerar o ID aleatório
 def gerar_id():
@@ -35,7 +39,6 @@ def criar_tabela():
     conn.commit()
     conn.close()
 
-# Função para gerar e salvar o QR Code
 # Função para gerar e salvar o QR Code
 def gerar_qr_code(id_usuario):
     # Define o caminho completo para a pasta qrcodes dentro de static
@@ -202,7 +205,14 @@ def logout():
     session.pop('logged_in', None)  # Remove a chave de sessão, deslogando o usuário
     return redirect(url_for('login'))
 
+# Força HTTPS para todas as requisições
+@app.before_request
+def force_https():
+    if not request.is_secure and not app.debug:
+        url = request.url.replace("http://", "https://", 1)
+        return redirect(url, code=301)
+
 if __name__ == '__main__':
     criar_tabela()  # Certifica-se de que a tabela existe antes de iniciar o app
     atualizar_tabela()
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=5000)  # Sem o debug=True
