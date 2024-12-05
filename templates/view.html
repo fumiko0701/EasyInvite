@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' https://cdn.jsdelivr.net;">
     <title>Visualizar Convidado</title>
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="{{ url_for('static', filename='css/view.css') }}" rel="stylesheet">  <!-- Link para o CSS externo -->
 </head>
@@ -31,17 +32,18 @@
             <p class="mb-1">{{ dados.convidados | default('Não informado') }}</p>
         </div>
 
-        <!-- Situação -->
-        <div class="mb-3">
-            <label for="situacao" class="form-label">Situação</label>
-            <select name="situacao" id="situacao" class="form-control">
-                <option value="Em espera" {% if dados.situacao == 'Em espera' %}selected{% endif %}>Em espera</option>
-                <option value="Recebido" {% if dados.situacao == 'Recebido' %}selected{% endif %}>Recebido</option>
-            </select>
-        </div>
-
-        <!-- Formulário de Anotações e Senha -->
+        <!-- Formulário -->
         <form method="POST">
+            <!-- Situação -->
+            <div class="mb-3">
+                <label for="situacao" class="form-label">Situação</label>
+                <select name="situacao" id="situacao" class="form-control" required>
+                    <option value="Em espera" {% if dados.situacao == 'Em espera' %}selected{% endif %}>Em espera</option>
+                    <option value="Recebido" {% if dados.situacao == 'Recebido' %}selected{% endif %}>Recebido</option>
+                </select>
+            </div>
+
+            <!-- Anotações -->
             <div class="mb-3">
                 <label for="anotacoes" class="form-label">Anotações</label>
                 <textarea name="anotacoes" id="anotacoes" class="form-control" rows="4" placeholder="Adicione anotações aqui...">{{ dados.anotacoes or '' }}</textarea>
@@ -50,7 +52,7 @@
             <h4>Alterar Registro</h4>
             <div class="mb-3">
                 <label for="senha" class="form-label">Digite a senha para editar</label>
-                <input type="password" name="senha" id="senha" class="form-control" placeholder="Senha">
+                <input type="password" name="senha" id="senha" class="form-control" placeholder="Senha" required>
             </div>
 
             <button type="submit" class="btn btn-primary">Salvar alterações</button>

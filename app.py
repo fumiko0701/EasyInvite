@@ -1,11 +1,15 @@
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, flash, render_template, request, redirect, url_for, session
 import random
 import string
 import sqlite3
 import qrcode
+from flask import send_file
 import os
 from flask import send_from_directory
 from flask_talisman import Talisman  # Para adicionar cabeçalhos de segurança
+import zipfile
+import shutil
+
 
 app = Flask(__name__, static_url_path='/static', static_folder='static')
 
@@ -74,6 +78,55 @@ def gerar_qr_code(id_usuario):
 def notforme():
     return render_template('notforme.html')
 
+# Função para compactar arquivos em um ZIP
+def zip_backup():
+    zip_path = os.path.join('static', 'backup.zip')
+    
+    # Cria o arquivo ZIP
+    with zipfile.ZipFile(zip_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
+        # Adiciona a pasta qrcodes e seu conteúdo
+        qrcodes_dir = os.path.join('static', 'qrcodes')
+        if os.path.exists(qrcodes_dir):
+            # Adiciona a pasta qrcodes ao zip, incluindo a estrutura de diretórios
+            for root, dirs, files in os.walk(qrcodes_dir):
+                for file in files:
+                    file_path = os.path.join(root, file)
+                    arcname = os.path.relpath(file_path, start=qrcodes_dir)  # Mantém a estrutura de pastas
+                    zipf.write(file_path, arcname=os.path.join('qrcodes', arcname))  # Adiciona no zip com o caminho correto
+
+        # Adiciona a pasta users e seu conteúdo
+        users_dir = os.path.join('static', 'users')
+        if os.path.exists(users_dir):
+            # Adiciona a pasta users ao zip, incluindo a estrutura de diretórios
+            for root, dirs, files in os.walk(users_dir):
+                for file in files:
+                    file_path = os.path.join(root, file)
+                    arcname = os.path.relpath(file_path, start=users_dir)  # Mantém a estrutura de pastas
+                    zipf.write(file_path, arcname=os.path.join('users', arcname))  # Adiciona no zip com o caminho correto
+        
+        # Adiciona o arquivo .db
+        db_file = 'registros.db'
+        if os.path.exists(db_file):
+            zipf.write(db_file, os.path.basename(db_file))
+
+    return zip_path
+
+
+# Rota para a página de backup
+@app.route('/backup', methods=['GET', 'POST'])
+def backup():
+    if 'logged_in' not in session or not session['logged_in']:
+        return redirect(url_for('login'))
+
+    if request.method == 'POST':
+        # Gera o backup.zip com todos os arquivos
+        zip_path = zip_backup()
+        
+        # Retorna o arquivo compactado como download
+        return send_file(zip_path, as_attachment=True)
+
+    return render_template('backup.html')
+
 # Página principal
 @app.route('/')
 def index():
@@ -82,11 +135,13 @@ def index():
         return redirect(url_for('login'))
 
     conn = get_db_connection()
-    registros = conn.execute('SELECT * FROM registros').fetchall()
+    # Ordenar os registros pelo nome do responsável de forma alfabética
+    registros = conn.execute('SELECT * FROM registros ORDER BY responsavel ASC').fetchall()
     conn.close()
 
     # Organize os dados como um dicionário para o template
     return render_template('index.html', registros=registros)
+
 
 def atualizar_tabela():
     conn = get_db_connection()
@@ -235,13 +290,18 @@ def view(id):
     conn.close()
 
     if registro is None:
-        return render_template('error.html', mensagem="ID não encontrado."), 404
+        return render_template('error.html', mensagem="ID não encontrado.", id=id), 404
 
     if request.method == 'POST':
-        senha = request.form['senha']
+        senha = request.form.get('senha')
         if senha == "saveall":
-            situacao = request.form['situacao']
-            anotacoes = request.form.get('anotacoes', '').strip()  # Captura o valor do campo de anotações
+            situacao = request.form.get('situacao')  # Usando get para evitar KeyError
+            anotacoes = request.form.get('anotacoes', '').strip()
+
+            if not situacao:
+                flash('A situação não pode estar vazia!', 'danger')
+                return redirect(url_for('view', id=id))
+
             try:
                 conn = get_db_connection()
                 conn.execute(
@@ -249,15 +309,17 @@ def view(id):
                     (situacao, anotacoes, id)
                 )
                 conn.commit()
+                flash('Dados atualizados com sucesso!', 'success')
             except sqlite3.Error as e:
                 print(f"Erro ao atualizar registro: {e}")
+                flash('Erro ao atualizar os dados, tente novamente mais tarde.', 'danger')
             finally:
                 conn.close()
-            
-            # Redireciona para a página principal após salvar alterações
+
             return redirect(url_for('index'))
         else:
-            return 'Senha incorreta', 403
+            flash('Senha incorreta', 'danger')
+            return redirect(url_for('view', id=id))
 
     return render_template('view.html', id=id, dados=registro)
 

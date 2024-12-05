@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Backup</title>
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
+</head>
+<body>
+    <h1>Backup dos Arquivos</h1>
+    <form action="{{ url_for('backup') }}" method="post">
+        <button type="submit">Baixar Backup Completo</button>
+    </form>
+</body>
+</html>
