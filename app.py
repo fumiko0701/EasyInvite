@@ -12,7 +12,15 @@ app = Flask(__name__)
 app.secret_key = '02faf3e2914'  # Use uma chave secreta real e segura para produção
 
 # Configurar o Talisman para adicionar cabeçalhos de segurança
-Talisman(app, content_security_policy=None)
+Talisman(app, content_security_policy={
+    'default-src': '\'self\'',
+    'img-src': '\'self\' data:',
+    'script-src': '\'self\' https://cdn.jsdelivr.net',
+    'style-src': '\'self\' https://cdn.jsdelivr.net',
+})
+
+Talisman(app, frame_options="DENY")
+
 
 # Função para gerar o ID aleatório
 def gerar_id():
@@ -205,12 +213,12 @@ def logout():
     session.pop('logged_in', None)  # Remove a chave de sessão, deslogando o usuário
     return redirect(url_for('login'))
 
-# Força HTTPS para todas as requisições
 @app.before_request
 def force_https():
-    if not request.is_secure and not app.debug:
+    if not request.is_secure and not app.debug and 'DYNO' in os.environ:  # Verifica se está em produção (exemplo: Heroku)
         url = request.url.replace("http://", "https://", 1)
         return redirect(url, code=301)
+
 
 if __name__ == '__main__':
     criar_tabela()  # Certifica-se de que a tabela existe antes de iniciar o app
