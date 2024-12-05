@@ -4,122 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' https://cdn.jsdelivr.net;">
-
     <title>Convidados</title>
     <!-- Link do Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            padding: 20px;
-            background-color: #f8f9fa;
-        }
-
-        h1 {
-            font-size: 1.8rem;
-        }
-
-        .table-container {
-            overflow-x: auto; /* Permite rolar horizontalmente em telas menores */
-            -webkit-overflow-scrolling: touch; /* Rolagem suave no mobile */
-        }
-
-        .table {
-            font-size: 0.9rem; /* Reduz o tamanho da fonte */
-        }
-
-        .table th, .table td {
-            vertical-align: middle;
-            white-space: nowrap; /* Evita quebra de palavras */
-        }
-
-        .table td {
-            word-wrap: break-word;
-            max-width: 200px; /* Limita o tamanho máximo das células */
-            white-space: normal; /* Permite que o texto quebre para manter a responsividade */
-        }
-
-        .search-container {
-            display: flex;
-            justify-content: flex-end;
-            margin-bottom: 20px;
-        }
-
-        .search-container input {
-            width: 80%;
-            max-width: 300px;
-            border-radius: 5px;
-            border: 1px solid #ced4da;
-            padding: 10px;
-            margin-right: 10px;
-        }
-
-        .search-container button {
-            background-color: #007bff;
-            color: white;
-            border: none;
-            padding: 10px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .search-container button:hover {
-            background-color: #0056b3;
-        }
-
-        /* botão registrar com estilo idêntico ao botão entrar */
-        .button-register {
-            background: linear-gradient(145deg, #dcdcdc, #ffffff); /* tons claros */
-            border: none;
-            padding: 0.5rem 1rem;
-            font-size: 1rem;
-            color: #333333; /* texto cinza escuro */
-            font-weight: bold;
-            border-radius: 8px;
-            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* sombra sutil */
-            cursor: pointer;
-            transition: background 0.3s;
-            display: block;
-            text-align: center;
-            text-decoration: none;
-            margin: 20px auto;
-        }
-
-        .button-register:hover {
-            background: linear-gradient(145deg, #e1e1e1, #f6f6f6); /* leve escurecimento no hover */
-            text-decoration: none;
-        }
-
-        /* Responsividade */
-        @media (max-width: 767px) {
-            h1 {
-                font-size: 1.5rem;
-            }
-
-            .button-register {
-                font-size: 14px;
-                padding: 8px 15px;
-                width: 80%;
-            }
-
-            .search-container input {
-                width: 70%;
-                max-width: 250px;
-            }
-
-            .search-container button {
-                padding: 8px;
-            }
-
-            .table {
-                font-size: 0.8rem; /* Ajusta o tamanho da fonte no mobile */
-            }
-
-            .table td {
-                max-width: 150px; /* Limita o tamanho máximo das células no mobile */
-            }
-        }
-    </style>
+    <!-- Link para o arquivo CSS externo -->
+    <link rel="stylesheet" href="/static/css/index.css">
 </head>
 <body>
     <h1 class="text-center">Registro de Convidados</h1>
@@ -130,7 +19,7 @@
     <!-- Campo de pesquisa -->
     <div class="search-container">
         <input type="text" id="searchId" class="form-control" placeholder="Cole ou digite o ID">
-        <button class="btn" onclick="searchId()">🔎</button>
+        <button id="searchBtn" class="btn">🔎</button>
     </div>
 
     <!-- Tabela de Dados com contêiner para responsividade -->
@@ -159,19 +48,9 @@
         </table>
     </div>
 
-    <!-- Script para buscar ID -->
-    <script>
-        function searchId() {
-            var id = document.getElementById('searchId').value.trim();
-            if (id) {
-                window.location.href = '/view/' + encodeURIComponent(id);
-            } else {
-                alert("Por favor, insira um ID válido.");
-            }
-        }
-    </script>
-
     <!-- Link para o Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Link para o arquivo JavaScript externo -->
+    <script src="/static/js/index.js"></script>
 </body>
 </html>

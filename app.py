@@ -6,7 +6,8 @@ import qrcode
 import os
 from flask_talisman import Talisman  # Para adicionar cabeçalhos de segurança
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/static', static_folder='static')
+
 
 # Configuração para sessão
 app.secret_key = '02faf3e2914'  # Use uma chave secreta real e segura para produção
@@ -15,10 +16,9 @@ app.secret_key = '02faf3e2914'  # Use uma chave secreta real e segura para produ
 Talisman(app, content_security_policy={
     'default-src': '\'self\'',
     'img-src': '\'self\' data:',
-    'script-src': '\'self\'',
-    'style-src': '\'self\'',
+    'script-src': '\'self\' https://cdn.jsdelivr.net',
+    'style-src': '\'self\' https://cdn.jsdelivr.net',
 })
-
 
 Talisman(app, frame_options="DENY")
 
@@ -58,7 +58,7 @@ def gerar_qr_code(id_usuario):
         os.makedirs(qr_code_dir)
     
     # Gerar a URL completa com o ID
-    url_qrcode = f"www.adtab-jantar.onrender.com/view/{id_usuario}"
+    url_qrcode = f"adtab-jantar.onrender.com/view/{id_usuario}"
     
     # Gerar o QR Code a partir da URL
     qr = qrcode.make(url_qrcode)
