@@ -46,7 +46,7 @@ def gerar_qr_code(id_usuario):
         os.makedirs(qr_code_dir)
     
     # Gerar a URL completa com o ID
-    url_qrcode = f"https://www.adtabjantar.onrender.com/view/{id_usuario}"
+    url_qrcode = f"https://www.adtab-jantar.onrender.com/view/{id_usuario}"
     
     # Gerar o QR Code a partir da URL
     qr = qrcode.make(url_qrcode)
