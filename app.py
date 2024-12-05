@@ -15,9 +15,10 @@ app.secret_key = '02faf3e2914'  # Use uma chave secreta real e segura para produ
 Talisman(app, content_security_policy={
     'default-src': '\'self\'',
     'img-src': '\'self\' data:',
-    'script-src': '\'self\' https://cdn.jsdelivr.net',
-    'style-src': '\'self\' https://cdn.jsdelivr.net',
+    'script-src': '\'self\'',
+    'style-src': '\'self\'',
 })
+
 
 Talisman(app, frame_options="DENY")
 
@@ -57,7 +58,7 @@ def gerar_qr_code(id_usuario):
         os.makedirs(qr_code_dir)
     
     # Gerar a URL completa com o ID
-    url_qrcode = f"https://www.adtab-jantar.onrender.com/view/{id_usuario}"
+    url_qrcode = f"www.adtab-jantar.onrender.com/view/{id_usuario}"
     
     # Gerar o QR Code a partir da URL
     qr = qrcode.make(url_qrcode)
@@ -223,4 +224,4 @@ def force_https():
 if __name__ == '__main__':
     criar_tabela()  # Certifica-se de que a tabela existe antes de iniciar o app
     atualizar_tabela()
-    app.run(host='0.0.0.0', port=5000)  # Sem o debug=True
+    app.run(host='0.0.0.0', port=5000, debug=True)  # Sem o debug=True
