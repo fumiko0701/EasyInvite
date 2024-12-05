@@ -4,6 +4,7 @@ import string
 import sqlite3
 import qrcode
 import os
+from flask import send_from_directory
 from flask_talisman import Talisman  # Para adicionar cabeçalhos de segurança
 
 app = Flask(__name__, static_url_path='/static', static_folder='static')
@@ -99,7 +100,35 @@ def atualizar_tabela():
     finally:
         conn.close()
 
-# Página de registro (admin)
+
+@app.route('/static/users/<id>')
+def user_image(id):
+    # Caminho onde as imagens estão armazenadas
+    image_dir = 'static/users'
+    
+    # Extensões possíveis das imagens
+    extensions = ['.jpg', '.jpeg', '.png']
+    
+    # Verifica qual arquivo existe
+    for ext in extensions:
+        image_path = os.path.join(image_dir, f"{id}{ext}")
+        if os.path.exists(image_path):
+            return send_from_directory(image_dir, f"{id}{ext}")
+    
+    # Caso nenhuma imagem seja encontrada, retorna uma imagem padrão
+    return send_from_directory(image_dir, 'default.jpg')
+
+
+# Caminho absoluto para a pasta onde as imagens serão armazenadas
+UPLOAD_FOLDER = os.path.join(os.path.dirname(__file__), 'static', 'users')
+
+# Defina as extensões permitidas para o upload
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
+
+# Função para verificar se o arquivo tem uma extensão permitida
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
 @app.route('/registrar', methods=['GET', 'POST'])
 def registrar():
     # Verificar se o usuário está autenticado
@@ -114,7 +143,31 @@ def registrar():
         anotacoes = request.form.get('anotacoes', '').strip()  # Recuperar o campo de anotações, padrão vazio se não preenchido
         situacao = 'Em espera'
 
-        # Inserir os dados no banco de dados com tratamento de exceção
+        # Processar o upload de imagem (se houver)
+        imagem_filename = None
+        if 'imagem' in request.files:
+            imagem = request.files['imagem']
+            if imagem and allowed_file(imagem.filename):
+                # Crie a pasta 'static/users' caso não exista
+                if not os.path.exists(UPLOAD_FOLDER):
+                    os.makedirs(UPLOAD_FOLDER)
+                    print("Pasta 'users' criada com sucesso.")
+                else:
+                    print("A pasta 'users' já existe.")
+
+
+                # Defina a extensão do arquivo (usando a extensão original)
+                extensao = imagem.filename.rsplit('.', 1)[1].lower()
+
+                # Defina o nome do arquivo com base no ID gerado
+                imagem_filename = f"{id_gerado}.{extensao}"
+                imagem_path = os.path.join(UPLOAD_FOLDER, imagem_filename)
+
+                # Salvar a imagem
+                imagem.save(imagem_path)
+                print(f"Imagem salva como {imagem_filename}")  # Verifique se a imagem foi salva corretamente
+
+        # Inserir os dados no banco de dados, sem incluir o nome da imagem
         try:
             conn = get_db_connection()
             conn.execute('INSERT INTO registros (id, responsavel, convidados, anotacoes, situacao) VALUES (?, ?, ?, ?, ?)',
@@ -132,6 +185,7 @@ def registrar():
         return redirect(url_for('index'))
     
     return render_template('registrar.html')
+
 
 
 @app.errorhandler(404)

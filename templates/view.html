@@ -10,21 +10,28 @@
 </head>
 <body>
     <div class="container">
-        <h1 class="text-center">Convidado de ID: {{ id }}</h1>
-        
-        <!-- Responsável: -->
+        <!-- Foto do Usuário -->
+        <div class="text-center mb-4">
+            <!-- Exibe a imagem do usuário de forma centralizada -->
+            <img src="{{ url_for('user_image', id=id) }}" alt="Foto do Usuário" class="img-fluid rounded-circle user-photo">
+        </div>
+
+        <!-- Título -->
+        <h1 class="text-center mb-4">Convidado de ID: {{ id }}</h1>
+
+        <!-- Responsável -->
         <div class="mb-3 text-center-custom">
             <p class="title-spacing"><strong>Responsável:</strong></p>
             <p class="mb-1">{{ dados.responsavel | default('Não informado') }}</p>
         </div>
 
-        <!-- Convidados: -->
+        <!-- Convidados -->
         <div class="mb-3 text-center-custom">
             <p class="title-spacing"><strong>Convidados:</strong></p>
             <p class="mb-1">{{ dados.convidados | default('Não informado') }}</p>
         </div>
 
-        <!-- Situação: -->
+        <!-- Situação -->
         <div class="mb-3">
             <label for="situacao" class="form-label">Situação</label>
             <select name="situacao" id="situacao" class="form-control">
@@ -55,9 +62,8 @@
         </form>
 
         <!-- Card com QR Code -->
-        <div class="card-qrcode">
+        <div class="card-qrcode mt-4">
             <h4>QR Code do Convidado</h4>
-            <!-- Inserir imagem do QR Code -->
             <img src="{{ url_for('static', filename='qrcodes/' + id + '.png') }}" alt="QR Code">
         </div>
     </div>

@@ -13,7 +13,7 @@
 <body>
     <div class="container mt-5">
         <h1 class="text-center mb-4">Registrar Responsável e Convidados</h1>
-        <form method="POST">
+        <form method="POST" enctype="multipart/form-data">
             <div class="mb-3">
                 <label for="responsavel" class="form-label">Responsável:</label>
                 <input type="text" class="form-control" name="responsavel" required>
@@ -27,6 +27,12 @@
                 <textarea class="form-control" name="anotacoes" rows="3" placeholder="Insira anotações ou observações aqui"></textarea>
             </div>
             <button type="submit" class="btn btn-primary w-100">Registrar</button>
+            <!-- Adicione a parte para upload de imagem após o campo de anotações -->
+            <div class="mb-3">
+                <label for="imagem" class="form-label">Imagem (opcional):</label>
+                <input type="file" class="form-control" name="imagem" accept="image/png, image/jpeg, image/jpg">
+            </div>
+
         </form>
     </div>
 
