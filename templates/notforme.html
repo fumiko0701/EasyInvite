@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oops! Algo deu errado</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
+            color: #333;
+        }
+
+        /* Ajuste da largura do card no modo desktop */
+        .container {
+            max-width: 800px; /* Largura maior no desktop */
+            margin-top: 100px;
+            padding: 30px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .message-container {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: #5a6268;
+            font-weight: bold;
+            white-space: normal; /* Permitir que o texto quebre quando necessário */
+            word-wrap: break-word;
+        }
+
+        p {
+            font-size: 1.1rem;
+            color: #6c757d;
+            margin-bottom: 1.5rem;
+        }
+
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* Texto extra em destaque */
+        .extra-text {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #dc3545; /* Cor vermelha para destacar */
+            margin-bottom: 2rem;
+            padding: 15px;
+            border: 1px solid #dc3545;
+            background-color: #f8d7da;
+            border-radius: 4px;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+            padding: 10px 20px;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            font-weight: bold;
+            border-radius: 4px;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+
+        .logo-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .logo-container img {
+            max-width: 200px;
+        }
+
+        /* Responsividade para dispositivos móveis */
+        @media (max-width: 768px) {
+            .container {
+                margin-top: 50px;
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 1.8rem; /* Ajuste de tamanho no mobile */
+                word-wrap: break-word; /* Garante que o texto quebre corretamente no celular */
+            }
+
+            p {
+                font-size: 1rem; /* Ajuste de tamanho no mobile */
+            }
+
+            .btn-primary {
+                width: 100%; /* Botão ocupa a largura total no mobile */
+            }
+
+            .logo-container img {
+                max-width: 150px; /* Logo menor no mobile */
+            }
+
+            .extra-text {
+                font-size: 1.1rem; /* Ajuste no tamanho do texto extra no mobile */
+                padding: 10px; /* Menos padding para caber melhor */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="message-container">
+            <h1>Acho que isso não é para você</h1>
+            <p>Se você faz parte da nossa equipe, por favor, inicie sua sessão clicando no botão de login.</p>
+        </div>
+        
+        <p class="extra-text">
+            Caso você seja um convidado ou participante do evento, não se preocupe! Esta página não foi destinada a você. Apenas ignore-a e mostre o QR Code fornecido a você para um dos membros da nossa equipe de recepção. Eles estarão prontos para orientá-lo e ajudá-lo com o que for necessário.
+        </p>
+        
+        <div class="text-center">
+            <a href="{{ url_for('login') }}" class="btn btn-primary">Voltar para login</a>
+        </div>
+    </div>
+
+    <div class="logo-container">
+        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo">
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
