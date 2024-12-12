@@ -4,9 +4,9 @@ body {
     color: #333;
 }
 
-/* Ajuste da largura do card no modo desktop */
+/* largura do card no modo desktop */
 .container {
-    max-width: 800px; /* Largura maior no desktop */
+    max-width: 800px; /* largura maior no desktop */
     margin-top: 100px;
     padding: 30px;
     background-color: #ffffff;
@@ -23,7 +23,7 @@ h1 {
     font-size: 2.5rem;
     color: #5a6268;
     font-weight: bold;
-    white-space: normal; /* Permitir que o texto quebre quando necessário */
+    white-space: normal; /* texto quebra quando necessário */
     word-wrap: break-word;
 }
 
@@ -46,7 +46,7 @@ a:hover {
 .extra-text {
     font-size: 1.2rem;
     font-weight: bold;
-    color: #dc3545; /* Cor vermelha para destacar */
+    color: #dc3545; /* vermelho pro destaque */
     margin-bottom: 2rem;
     padding: 15px;
     border: 1px solid #dc3545;
@@ -76,10 +76,11 @@ a:hover {
 }
 
 .logo-container img {
-    max-width: 200px;
+    max-width: 150px; /* menor no desktop */
 }
 
-/* Responsividade para dispositivos móveis */
+
+/* para dispositivos móveis */
 @media (max-width: 768px) {
     .container {
         margin-top: 50px;
@@ -87,24 +88,24 @@ a:hover {
     }
 
     h1 {
-        font-size: 1.8rem; /* Ajuste de tamanho no mobile */
-        word-wrap: break-word; /* Garante que o texto quebre corretamente no celular */
+        font-size: 1.8rem; /* ajuste de tamanho no mobile */
+        word-wrap: break-word; /* garante que o texto quebre corretamente no celular */
     }
 
     p {
-        font-size: 1rem; /* Ajuste de tamanho no mobile */
+        font-size: 1rem; /* ajuste de tamanho no mobile */
     }
 
     .btn-primary {
-        width: 100%; /* Botão ocupa a largura total no mobile */
+        width: 100%; /* ocupa a largura total no mobile */
     }
 
     .logo-container img {
-        max-width: 150px; /* Logo menor no mobile */
+        max-width: 150px; /* menor no mobile */
     }
 
     .extra-text {
-        font-size: 1.1rem; /* Ajuste no tamanho do texto extra no mobile */
-        padding: 10px; /* Menos padding para caber melhor */
+        font-size: 1.1rem; /* tamanho do texto extra no mobile */
+        padding: 10px; /* para caber melhor */
     }
 }

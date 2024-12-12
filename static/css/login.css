@@ -22,7 +22,7 @@
     text-decoration: none;
 }
 
-/* Estilo para os créditos no final da página */
+/* créditos no final da página */
 .credits {
     text-align: center;
     font-size: 0.9rem;
@@ -49,7 +49,7 @@
     text-decoration: underline;
 }
 
-/* Estilo para o nome e foto no rodapé */
+/* para o nome e foto no rodapé */
 .profile-footer {
     display: flex;
     justify-content: center;
@@ -60,7 +60,7 @@
 .profile-footer img {
     width: 80px;
     height: 80px;
-    object-fit: cover; /* Ajusta a imagem para manter o corte proporcional */
+    object-fit: cover; /* imagem para manter o corte proporcional */
     border-radius: 50%;
     margin-bottom: 10px;
 }
@@ -89,10 +89,10 @@
     margin-top: 5px;
 }
 
-/* Responsividade para telas pequenas */
+/* telas pequenas */
 @media (max-width: 768px) {
     .button-register {
-        width: 100%; /* Faz o botão ocupar toda a largura em telas pequenas */
+        width: 100%; /* ocupa toda a largura em telas pequenas */
         margin-top: 15px;
     }
 

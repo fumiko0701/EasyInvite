@@ -7,34 +7,27 @@
     <title>Visualizar Convidado</title>
     <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="{{ url_for('static', filename='css/view.css') }}" rel="stylesheet">  <!-- Link para o CSS externo -->
+    <link href="{{ url_for('static', filename='css/view.css') }}" rel="stylesheet">
 </head>
 <body>
     <div class="container">
-        <!-- Foto do Usuário -->
         <div class="text-center mb-4">
-            <!-- Exibe a imagem do usuário de forma centralizada -->
             <img src="{{ url_for('user_image', id=id) }}" alt="Foto do Usuário" class="img-fluid rounded-circle user-photo">
         </div>
 
-        <!-- Título -->
         <h1 class="text-center mb-4">Convidado de ID: {{ id }}</h1>
 
-        <!-- Responsável -->
         <div class="mb-3 text-center-custom">
             <p class="title-spacing"><strong>Responsável:</strong></p>
             <p class="mb-1">{{ dados.responsavel | default('Não informado') }}</p>
         </div>
 
-        <!-- Convidados -->
         <div class="mb-3 text-center-custom">
             <p class="title-spacing"><strong>Convidados:</strong></p>
             <p class="mb-1">{{ dados.convidados | default('Não informado') }}</p>
         </div>
 
-        <!-- Formulário -->
         <form method="POST">
-            <!-- Situação -->
             <div class="mb-3">
                 <label for="situacao" class="form-label">Situação</label>
                 <select name="situacao" id="situacao" class="form-control" required>
@@ -43,7 +36,6 @@
                 </select>
             </div>
 
-            <!-- Anotações -->
             <div class="mb-3">
                 <label for="anotacoes" class="form-label">Anotações</label>
                 <textarea name="anotacoes" id="anotacoes" class="form-control" rows="4" placeholder="Adicione anotações aqui...">{{ dados.anotacoes or '' }}</textarea>
@@ -58,12 +50,10 @@
             <button type="submit" class="btn btn-primary">Salvar alterações</button>
         </form>
 
-        <!-- Botão Excluir -->
-        <form method="POST" action="{{ url_for('excluir', id=id) }}">
+        <form method="POST" action="{{ url_for('auth.excluir', id=id) }}">
             <button type="submit" class="btn btn-danger mt-3" onclick="return confirmDelete()">Excluir</button>
         </form>
 
-        <!-- Card com QR Code -->
         <div class="card-qrcode mt-4">
             <h4>QR Code do Convidado</h4>
             <img src="{{ url_for('static', filename='qrcodes/' + id + '.png') }}" alt="QR Code">
@@ -71,6 +61,6 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="{{ url_for('static', filename='js/view.js') }}"></script>  <!-- Link para o JS externo -->
+    <script src="{{ url_for('static', filename='js/view.js') }}"></script>
 </body>
 </html>
